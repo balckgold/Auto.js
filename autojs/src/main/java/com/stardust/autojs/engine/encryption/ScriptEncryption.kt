@@ -4,7 +4,7 @@ import com.stardust.util.AdvancedEncryptionStandard
 
 object ScriptEncryption {
 
-    private var mKey = ""
+    private var mKey = "testttttt"
     private var mInitVector = ""
 
     fun decrypt(bytes: ByteArray, start: Int = 0, end: Int = bytes.size): ByteArray {

@@ -1,5 +1,7 @@
 package com.stardust.autojs.script;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.stardust.pio.PFiles;
@@ -40,6 +42,7 @@ public class JavaScriptFileSource extends JavaScriptSource {
     public String getScript() {
         if (mScript == null)
             mScript = PFiles.read(mFile);
+            Log.d("yly", "getScript: "+mScript);
         return mScript;
     }
 
