@@ -1,10 +1,10 @@
-auto.waitFor()
+auto.waitFor();
 //var intent = new Intent();
 //intent.setAction("android.settings.ACCESSIBILITY_SETTINGS"); //打开无障碍设置界面
 //app.startActivity(intent);
 sleep(15000);
-auto.waitFor()
-log("已经开启")
+auto.waitFor();
+log("已经开启");
 
 //全局状态机业务
 var interval=5000;
@@ -46,8 +46,8 @@ function rawScrollDown(x,y,s,down,slow){
 	if(slow)
 	if(!rootFlag&&!device.sdkInt<24){
 		log("没有root权限也不是android 7以上设备，无法使用滑动坐标功能");
-		exit();	
-	}	
+		exit();
+	}
 	if(rootFlag){
 		if(down)
 				Swipe(rawX,rawY,rawX,rawY-device.height*s,scrollTime);
@@ -215,7 +215,7 @@ function  seriesTextClick(texts,tmpTimeout){
 													 return true;
 												 else
 												 	return false;
-			
+
 							})
 		){
 			tmpRet=true;
@@ -236,7 +236,7 @@ function uiSelectsWait(uiSelects,tmpTimeout){
 										}
 										return false;
 										}
-							)	
+							)
 
 }
 
@@ -261,13 +261,13 @@ function uiClickWrapper(X){
 function uiForceClick(X){
 	var i=0;
 	var tmpUiSelect;
-	for(i=0;i<300;i++){
+	for(i=0;i<500;i++){
 		tmpUiSelect=X.findOnce();
 		if(tmpUiSelect!=null){
-			clickWrapper(tmpUiSelect.bounds().centerX(),tmpUiSelect.bounds().centerY());	
+			clickWrapper(tmpUiSelect.bounds().centerX(),tmpUiSelect.bounds().centerY());
 			return true;
 		}else
-			sleep(10);
+			sleep(5);
 	}
 	return false;
 
@@ -320,10 +320,10 @@ http.put = function(url, options, callback){
 
 
 var HttpHead={
-		headers:{ 
-    	    'X-Parse-Application-Id': 'wisp', 
-    	    'X-Parse-REST-API-Key': 'wisp', 
-    	    'X-Parse-Revocable-Session':1, 
+		headers:{
+    	    'X-Parse-Application-Id': 'wisp',
+    	    'X-Parse-REST-API-Key': 'wisp',
+    	    'X-Parse-Revocable-Session':1,
     	    'Content-Type':'application/json'
 		}
 	};
@@ -364,7 +364,7 @@ if(httpRet!=null){
 			else if(body.hasOwnProperty('error')){
 				log("返回了error，error内容：");
 				ret=-100
-			}else{ 
+			}else{
 				ret=-200;
 			}
 			log(body.error.toString());
@@ -390,22 +390,22 @@ function login(force){
 			var httpRetJson=httpRet.body.json();
 			if(checkHttpResponse(httpRet,httpRetJson)<0){
 				log("登陆错误")
-				threads.currentThread().interrupt(); 
+				threads.currentThread().interrupt();
 			}
 			log("login ret body is"+JSON.stringify(httpRetJson)+" statusCode is "+httpRet.statusCode)
 
 			if(httpRetJson.sessionToken!=null){
-				sessionToken=httpRetJson.sessionToken.toString();				
+				sessionToken=httpRetJson.sessionToken.toString();
 				getGlobeStorage().put("httpToken",sessionToken.toString());
 				log("get token is "+sessionToken.toString());
 			}
 			else{
 				log("找不到sessionToken");
 			}
-			threads.currentThread().interrupt(); 
+			threads.currentThread().interrupt();
 		})
 		return 0;
-		
+
     }else if(sessionToken!=null){
     	log("进入fetchJobs状态")
     	//添加session到head中
@@ -421,16 +421,16 @@ var undoJobs=null
 function pushOneJob(job,ifPushAll){
 	ifPushAll = ifPushAll || false;
 	if(job !=null && job.objectId!=null &&inHttpProceesing==false){
-	
+
 		var targetUrl=serviceIp+"/parse/classes/task/"+job.objectId.toString();
-		
+
 		threads.start(function (){
 		log("pushOnejob "+targetUrl+"body is "+JSON.stringify({'done':job.done}))
 		var tmpOptions={
 			body:JSON.stringify(cloneParseObject(job)),
-			headers:HttpHead.headers	 
+			headers:HttpHead.headers
 		}
-		
+
 		inHttpProceesing=true;
 		var httpRet=http.put(targetUrl,tmpOptions);
 		HTTPemitter.emit('httpRsponse',"updateOneJob完成");
@@ -454,7 +454,7 @@ function fetchJobs(force){
 		var httpRetJson=httpRet.body.json();
 		if(checkHttpResponse(httpRet,httpRetJson)<0){
 			log("获取task错误")
-			threads.currentThread().interrupt(); 
+			threads.currentThread().interrupt();
 		}
 		// log("task is"+JSON.stringify(httpRetJson.results[0].objectId)+" statusCode is "+httpRet.statusCode)
 		log("fetchJobs:"+JSON.stringify(httpRetJson.results)+" statusCode is "+httpRet.statusCode)
@@ -476,7 +476,7 @@ function fetchJobs(force){
 	}
 
 	return fetchJobsRet;
-	
+
 }
 
 
@@ -497,7 +497,7 @@ function findRedBag(){
 			while(true){
 				log("开始找红包");
 				text("微信红包").className("android.widget.TextView").waitFor();
-				
+
 				var haf_foundBag=0;
 
 				var badBags=[];
@@ -510,7 +510,7 @@ function findRedBag(){
 
 				// 		log("bad bags :"+ele2.text())
 				// 	})
-					
+
 				// }
 
 				// )
@@ -523,7 +523,7 @@ function findRedBag(){
 				 	contain=false;
 				 	log("ele1 React:"+ele1.bounds());
 					badBags.forEach(function(ele2){
-						log("ele2"); 
+						log("ele2");
 						ele2.forEach(function(ele3){
 							log("ele3 React:"+ele3.bounds());
 							// log("bad bags :"+ele3.text())
@@ -572,7 +572,7 @@ function findRedBag(){
 				// 		lastRedBag=regBag;
 				// 	}
 				// })
-				
+
 				if(targetsRedBag!=null){
 					log("开始点击"+targetsRedBag);
 					click(targetsRedBag.bounds().centerX(),targetsRedBag.bounds().centerY());
@@ -589,7 +589,7 @@ function findRedBag(){
 					waitCounter++;
 					if(currentActivity()=="com.tencent.mm.plugin.luckymoney.ui.LuckyMoneyDetailUI"){
 						log("红包不对！")
-						text("红包记录").waitFor();			
+						text("红包记录").waitFor();
 						back();
 						break;
 					}
@@ -608,7 +608,7 @@ function findRedBag(){
 
 				waitForActivity("com.tencent.mm.ui.LauncherUI");
 				sleep(100)
-				
+
 		}
 	})
 
@@ -637,7 +637,7 @@ function doMifiAdv(){
 												 return true;
 											else if(currentActivity()=="com.tencent.server.fore.DeskTopActivity")
 												return  true;
-											else 
+											else
 												return false;
 										})){
 
@@ -647,7 +647,7 @@ function doMifiAdv(){
 		dumpMsg();
 		return -1;
 	}
-	
+
 	if(currentActivity()=="com.tencent.server.fore.QuickLoadActivity"){
     	log("进入福利")
 		sleep(1500);
@@ -699,7 +699,7 @@ function doMifiAdv(){
 			sleep(3000);
 			uiClickWrapper(text("允许"))
 			sleep(3000)
-			rootShell("am force-stop com.miui.packageinstaller");	
+			rootShell("am force-stop com.miui.packageinstaller");
 			back();sleep(200);back();sleep(300);back();sleep(300);
 			home();
 			return 1;
@@ -718,7 +718,7 @@ function doMifiAdv(){
 		if(!uiSelectsWait([text("应用介绍"),text("下一步"),textContains("关闭广告"),text("马上领取"),text["安装"]],30000)){
 			log("无法进入任务界面，退出重来");
 			back();sleep(500);back();sleep(500);back();sleep(500);
-			return -1;		
+			return -1;
 		}
 		appTaskFlag=text("应用介绍").findOnce();
 		appInstallingFlag=text("下一步").findOnce();
@@ -737,22 +737,22 @@ function doMifiAdv(){
 							home();sleep(3000);
 							return 1;
 						}
-							
+
 						break;
 					}
 					if(currentActivity()!="com.tencent.server.fore.QuickLoadActivity"){
 						log("看上去出了异常，跳出了activity");
-						return -1;	
+						return -1;
 					}
 				}
-			}		
+			}
 			log("进入应用安装阶段");
 			//等待出现下一步
 			//一直点下一步，直到安装
 			log("一直点击下一步，安装或打开");
 			//退出是因为在红米中会不小心点到应用市场安装
 			if(seriesTextClick(["下一步","安装","打开","退出"],10000)){
-				sleep(5000);home(); 
+				sleep(5000);home();
 				sleep(5000);
 				return 1;
 			}else
@@ -784,14 +784,14 @@ function doMifiAdv(){
 							}
 							//一般也就两个马上领取，直接退出算了
 							back();sleep(500);back();sleep(500);home();sleep(500);
-							// rootShell("am force-stop com.miui.packageinstaller");	
+							// rootShell("am force-stop com.miui.packageinstaller");
 							return 1;
 						}
 						continue;
 					}
 				}
 
-			}else{ 
+			}else{
 				log("可能异常状态，等待进入任务界面");
 				sleep(500);
 				continue;
@@ -875,7 +875,10 @@ function uninstallApps(){
 
 //清理后台程序
 function  clearBackApp(){
-	var whiteApp=["com.tencent.mobileqq","com.zhiwang.mifimanager","org.autojs.autojs","com.tencent.mm","com.wisp.mifi"]
+	var whiteApp=["com.tencent.mobileqq","com.zhiwang.mifimanager",
+                  								"org.autojs.autojs","com.tencent.mm","com.virtualdroid.kit",
+                  								"com.topjohnwu.magisk","de.robv.android.xposed.installer","com.juejin",
+                  							"com.gojek.galau.ggtools","com.wisp.mifi"]
 	var pm = context.getPackageManager()
 	var appList=pm.getInstalledApplications(0)
 	var appInfoList=[]
@@ -901,11 +904,11 @@ function  clearBackApp(){
 			if(shellRet.code == 0){ //shell执行成功
 				if(shellRet.result.length>4)
 					log("杀死 app："+appInfoList[tmpApp].appName);
-					rootShell("am force-stop " +  appInfoList[tmpApp].packageName);	
+					rootShell("am force-stop " +  appInfoList[tmpApp].packageName);
 					sleep(3000);
 			}
 		}
-	
+
 	}
 
 }
@@ -915,15 +918,17 @@ function doBjb(){
     packageName: "com.juejin",
 		className: "com.juejin.ui.MainShowActivity"
 }), true);
-	if(!threadBlockWating(10000,function (){
+    sleep(1500);
+	if(!threadBlockWating(1000,function (){
 		if(currentActivity()=="com.juejin.ui.MainShowActivity")
 			return true;
-		else   return false;		
+		sleep(50);
+		return false;
 	})){
-		log("启动变机宝失败，尝试乱点一通，并杀死变机宝后返回");
+		log("启动变机宝失败，尝试乱点一通");
 		seriesTextClick(["允许","启动"],1000);
 		back();sleep(500);back();sleep(500);home();
-		rootShell("am force-stop com.juejin");	
+		rootShell("am force-stop com.juejin");
 		sleep(3000);
 		return -1;
 	}
@@ -942,7 +947,7 @@ function doBjb(){
 	}else
 		uiClickWrapper(id("hardsavebutton"));
 
-	
+
 	while(true){
 		log("等待切换成功");
 		sleep(1000);
@@ -954,8 +959,8 @@ function doBjb(){
 			lastToastFlag=0;//这里需要切到0，否则有bug
 			log("最后一个或第一个，重新处理")
 			return -3;
-		}		
-		
+		}
+
 		tmpDate=new Date().getTime();
 		log("当前时间"+tmpDate.toString())
 		if(tmpDate>lastToastFlag&&tmpDate-lastToastFlag<3000){
@@ -965,9 +970,9 @@ function doBjb(){
 		else{
 			continue;
 		}
-		
+
 	}
-	
+
 	uiClickWrapper(id("delselect"));
 	sleep(2000);
 	if(id("rate").findOnce()!=null){
@@ -975,8 +980,8 @@ function doBjb(){
 		if(id("rate").findOne().text().indexOf("当前进度  0")>=0){
 			log("第0个，返回不做处理的标识");
 			return -3;
-		} 
-	} 
+		}
+	}
 	// sleep(10000);
 	// inDebug();
 	return 1;
@@ -987,15 +992,15 @@ function bjb_do_mifiAdv(){
 	var taskFlag=0;
 	while(true){
 		var tmpRet=doMifiAdv();
-		log("此次mifi任务结果为"+tmpRet.toString());		
-		if(tmpRet==2){		
+		log("此次mifi任务结果为"+tmpRet.toString());
+		if(tmpRet==2){
 			break;
 		}
 		if(tmpRet<0){
 			if(tmpRet==-1){
 				rootShell("am force-stop com.zhiwang.mifimanager" );
 				clearBackApp();
-				
+
 			}
 			taskFlag++;
 		}else{
@@ -1023,7 +1028,7 @@ function bjb(){
 		return 0;
 	bjbWroking=true;
 	threads.start(function (){
-		
+
 		if(getGlobeStorage().get("bjb_dir","forward")=="forward")
 			log("变机宝将使用存留方向为：下一条记录")
 		else
@@ -1039,9 +1044,16 @@ function bjb(){
 				//启动实际任务，授权app
 				log("启动业务");
 				launch("com.zhiwang.mifimanager");
-				waitForActivity("com.android.packageinstaller.permission.ui.GrantPermissionsActivity",10000)
-				seriesTextClick(["立即开启","允许"],3000);
-				
+				if(threadBlockWating(15000,function (){
+					if(currentActivity()=="com.android.packageinstaller.permission.ui.GrantPermissionsActivity")
+						return  true;
+					else
+						return false;
+
+
+				}))
+					seriesTextClick(["立即开启","允许"],3000);
+
 				bjb_do_mifiAdv();
 			}
 			sleep(5000);
@@ -1068,7 +1080,7 @@ roopStat();
 
 //inDebug()
 function roopStat(){
-    statFunction()  
+    statFunction()
     setTimeout(roopStat, interval);
 }
 

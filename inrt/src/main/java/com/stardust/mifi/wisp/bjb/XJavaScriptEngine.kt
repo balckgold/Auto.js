@@ -1,4 +1,4 @@
-package com.stardust.auojs.inrt.autojs
+package com.stardust.mifi.wisp.bjb
 
 import android.content.Context
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine

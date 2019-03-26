@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.stardust.auojs.inrt">
+          package="com.stardust.mifi.wisp">
 
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -20,7 +20,7 @@
 
 
     <application
-        android:name=".App"
+        android:name="com.stardust.mifi.wisp.App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="wisp"
@@ -30,12 +30,12 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".LogActivity">
+        <activity android:name="com.stardust.mifi.wisp.LogActivity">
 
         </activity>
 
         <activity
-            android:name=".SplashActivity"
+            android:name="com.stardust.mifi.wisp.SplashActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingsActivity"/>
+        <activity android:name="com.stardust.mifi.wisp.SettingsActivity"/>
 
         <service
             android:name="com.stardust.notification.NotificationListenerService"

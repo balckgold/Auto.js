@@ -1,4 +1,4 @@
-package com.stardust.auojs.inrt
+package com.stardust.mifi.wisp
 
 import android.os.Bundle
 import androidx.annotation.Nullable

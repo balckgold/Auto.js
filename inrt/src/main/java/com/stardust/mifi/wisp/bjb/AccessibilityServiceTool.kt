@@ -1,4 +1,4 @@
-package com.stardust.auojs.inrt.autojs
+package com.stardust.mifi.wisp.bjb
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -7,7 +7,6 @@ import android.provider.Settings
 import android.text.TextUtils
 
 import com.stardust.app.GlobalAppContext
-import com.stardust.auojs.inrt.App
 import com.stardust.autojs.core.util.ProcessShell
 
 import java.util.Locale

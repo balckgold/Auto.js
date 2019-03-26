@@ -1,4 +1,4 @@
-package com.stardust.auojs.inrt
+package com.stardust.mifi.wisp
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager

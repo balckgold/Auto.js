@@ -1,4 +1,4 @@
-package com.stardust.auojs.inrt
+package com.stardust.mifi.wisp
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 
-import com.stardust.auojs.inrt.autojs.AutoJs
-import com.stardust.auojs.inrt.launch.GlobalProjectLauncher
+import com.stardust.mifi.wisp.bjb.AutoJs
+import com.stardust.mifi.wisp.launch.GlobalProjectLauncher
 import com.stardust.autojs.core.console.ConsoleView
 import com.stardust.autojs.core.console.ConsoleImpl
 

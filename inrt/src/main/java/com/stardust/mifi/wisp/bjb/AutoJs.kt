@@ -1,13 +1,13 @@
-package com.stardust.auojs.inrt.autojs
+package com.stardust.mifi.wisp.bjb
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.stardust.app.GlobalAppContext
-import com.stardust.auojs.inrt.LogActivity
-import com.stardust.auojs.inrt.Pref
-import com.stardust.auojs.inrt.R
-import com.stardust.auojs.inrt.SettingsActivity
+import com.stardust.mifi.wisp.LogActivity
+import com.stardust.mifi.wisp.Pref
+import com.stardust.mifi.wisp.R
+import com.stardust.mifi.wisp.SettingsActivity
 import com.stardust.autojs.runtime.ScriptRuntime
 import com.stardust.autojs.runtime.api.AppUtils
 import com.stardust.autojs.runtime.exception.ScriptException
@@ -15,7 +15,6 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException
 import com.stardust.autojs.script.JavaScriptSource
 import com.stardust.view.accessibility.AccessibilityService
 import com.stardust.view.accessibility.AccessibilityServiceUtils
-import java.lang.IllegalStateException
 
 
 /**

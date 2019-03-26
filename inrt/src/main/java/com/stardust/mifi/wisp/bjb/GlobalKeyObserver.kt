@@ -1,10 +1,10 @@
-package com.stardust.auojs.inrt.autojs
+package com.stardust.mifi.wisp.bjb
 
 import android.util.Log
 import android.view.KeyEvent
 
 import com.stardust.app.GlobalAppContext
-import com.stardust.auojs.inrt.Pref
+import com.stardust.mifi.wisp.Pref
 import com.stardust.autojs.core.inputevent.InputEventObserver
 import com.stardust.autojs.core.inputevent.ShellKeyObserver
 import com.stardust.view.accessibility.AccessibilityService
