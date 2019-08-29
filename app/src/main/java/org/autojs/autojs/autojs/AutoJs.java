@@ -139,7 +139,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         }
         if (errorMessage != null) {
             AccessibilityServiceTool.goToAccessibilitySetting();
-            throw new ScriptException(errorMessage);
+//            throw new ScriptException(errorMessage);
         }
     }
 
@@ -163,7 +163,8 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         if (errorMessage != null) {
             AccessibilityServiceTool.goToAccessibilitySetting();
             if (!AccessibilityService.Companion.waitForEnabled(-1)) {
-                throw new ScriptInterruptedException();
+//                throw new ScriptInterruptedException();
+                ;
             }
         }
     }

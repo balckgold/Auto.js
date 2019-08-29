@@ -7,12 +7,14 @@ buildscript {
     repositories {
         google()
         jcenter()
+        //这里是 LeanCloud 的包仓库 wisp add
+        maven { url "http://mvn.leancloud.cn/nexus/content/repositories/public" }
+        //wisp add end
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-rc2'
-
     }
 }
 

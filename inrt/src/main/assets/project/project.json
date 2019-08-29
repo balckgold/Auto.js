@@ -6,8 +6,8 @@
     "build_time": 1543638246643
   },
   "main": "main.js",
-  "name": "打包测试",
-  "packageName": "xx.xx",
+  "name": "projectMIFI",
+  "packageName": "com.wisp.mifi",
   "versionCode": 1,
   "versionName": "1.0.0"
 }

@@ -10,6 +10,8 @@ import androidx.multidex.MultiDexApplication
 import android.view.View
 import android.widget.ImageView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import cn.leancloud.AVLogger
+import cn.leancloud.AVOSCloud
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -43,6 +45,10 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        //wisp add
+//        AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);// or AVOSCloud.setLogLevel(AVLogger.Level.VERBOSE);
+        AVOSCloud.initialize(this,"sWNimdQk9KzqGOym07XL6YJx-gzGzoHsz","BbplFbAAKGJmWQtpwTeF2BXh");
+        //wisp add end
         GlobalAppContext.set(this)
         instance = WeakReference(this)
         setUpStaticsTool()
