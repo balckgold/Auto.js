@@ -1,16 +1,18 @@
 package org.autojs.autojs.ui.shortcut;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -86,9 +88,11 @@ public class ShortcutCreateActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("NewApi") //for fool android studio
     private void createShortcut() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && mUseAndroidNShortcut.isChecked()) {
-            createShortcutForAndroidN();
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 && mUseAndroidNShortcut.isChecked())
+                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createShortcutByShortcutManager();
             return;
         }
         Shortcut shortcut = new Shortcut(this);
@@ -105,22 +109,30 @@ public class ShortcutCreateActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
-    private void createShortcutForAndroidN() {
+    private void createShortcutByShortcutManager() {
         Icon icon;
         if (mIsDefaultIcon) {
-            icon = Icon.createWithResource(this, R.drawable.ic_node_js_black);
+            icon = Icon.createWithResource(this, R.drawable.ic_file_type_js);
         } else {
             Bitmap bitmap = BitmapTool.drawableToBitmap(mIcon.getDrawable());
             icon = Icon.createWithBitmap(bitmap);
         }
         PersistableBundle extras = new PersistableBundle(1);
         extras.putString(ScriptIntents.EXTRA_KEY_PATH, mScriptFile.getPath());
-        ShortcutManager.getInstance(this).addDynamicShortcut(mName.getText(), mScriptFile.getPath(), icon,
-                new Intent(this, ShortcutActivity.class)
-                        .putExtra(ScriptIntents.EXTRA_KEY_PATH, mScriptFile.getPath())
-                        .setAction(Intent.ACTION_MAIN));
+        Intent intent = new Intent(this, ShortcutActivity.class)
+                .putExtra(ScriptIntents.EXTRA_KEY_PATH, mScriptFile.getPath())
+                .setAction(Intent.ACTION_MAIN);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ShortcutManager.getInstance(this).addPinnedShortcut(mName.getText(), mScriptFile.getPath(), icon, intent);
+        } else {
+            ShortcutManager.getInstance(this).addDynamicShortcut(mName.getText(), mScriptFile.getPath(), icon, intent);
+        }
+
     }
 
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -136,7 +148,11 @@ public class ShortcutCreateActivity extends AppCompatActivity {
             }
             return;
         }
-        Observable.fromCallable(() -> BitmapFactory.decodeStream(getContentResolver().openInputStream(data.getData())))
+        Uri uri = data.getData();
+        if(uri == null){
+            return;
+        }
+        Observable.fromCallable(() -> BitmapFactory.decodeStream(getContentResolver().openInputStream(uri)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((bitmap -> {

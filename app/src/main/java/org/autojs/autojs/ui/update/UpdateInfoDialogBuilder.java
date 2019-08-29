@@ -1,9 +1,10 @@
 package org.autojs.autojs.ui.update;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -14,14 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import org.autojs.autojs.BuildConfig;
-import org.autojs.autojs.R;
-import org.autojs.autojs.network.entity.VersionInfo;
-import org.autojs.autojs.storage.file.StorageFileProvider;
-import org.autojs.autojs.tool.IntentTool;
-import com.stardust.util.DownloadTask;
 import com.stardust.util.IntentUtil;
+
+import org.autojs.autojs.BuildConfig;
+import org.autojs.autojs.Pref;
+import org.autojs.autojs.R;
+import org.autojs.autojs.external.fileprovider.AppFileProvider;
+import org.autojs.autojs.network.download.DownloadManager;
+import org.autojs.autojs.network.entity.VersionInfo;
+import org.autojs.autojs.tool.IntentTool;
 import org.autojs.autojs.ui.widget.CommonMarkdownView;
+
+import java.io.File;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Stardust on 2017/4/9.
@@ -103,44 +110,26 @@ public class UpdateInfoDialogBuilder extends MaterialDialog.Builder {
         }
         Button button = (Button) View.inflate(getContext(), R.layout.dialog_update_info_btn, null);
         button.setText(R.string.text_directly_download);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                directlyDownload(info.downloadUrl);
-            }
-        });
+        button.setOnClickListener(v -> directlyDownload(info.downloadUrl));
         container.addView(button);
     }
 
+    @SuppressLint("CheckResult")
     private void directlyDownload(String downloadUrl) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.text_downloading)
-                .progress(false, 100)
-                .show();
-        final String path = StorageFileProvider.getDefaultDirectoryPath() + "AutoJs.apk";
-        final DownloadTask task = new DownloadTask() {
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                dialog.setProgress(values[0]);
-            }
+        final String path = new File(Pref.getScriptDirPath(), "AutoJs.apk").getPath();
+        DownloadManager.getInstance().downloadWithProgress(getContext(), downloadUrl, path)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(file -> IntentUtil.installApkOrToast(getContext(), file.getPath(), AppFileProvider.AUTHORITY),
+                        error -> {
+                            error.printStackTrace();
+                            Toast.makeText(getContext(), R.string.text_download_failed, Toast.LENGTH_SHORT).show();
+                        });
 
-            @Override
-            protected void onPostExecute(Boolean result) {
-                super.onPostExecute(result);
-                dialog.dismiss();
-                if (!result) {
-                    Toast.makeText(getContext(), R.string.text_download_failed, Toast.LENGTH_SHORT).show();
-                } else {
-                    IntentUtil.installApk(getContext(), path);
-                }
-            }
-        };
-        task.execute(downloadUrl, path);
     }
 
+
     private void setReleaseNotes(View view, VersionInfo info) {
-        CommonMarkdownView markdownView = (CommonMarkdownView) view.findViewById(R.id.release_notes);
+        CommonMarkdownView markdownView = view.findViewById(R.id.release_notes);
         markdownView.loadMarkdown(info.releaseNotes);
     }
 }

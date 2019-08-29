@@ -2,13 +2,17 @@ package org.autojs.autojs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.runtime.accessibility.AccessibilityConfig;
+import com.stardust.theme.ThemeColorManager;
 
 import org.autojs.autojs.autojs.key.GlobalKeyObserver;
+import org.autojs.autojs.theme.ThemeColorManagerCompat;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,11 +21,9 @@ import java.util.concurrent.TimeUnit;
 public class Pref {
 
     private static final SharedPreferences DISPOSABLE_BOOLEAN = GlobalAppContext.get().getSharedPreferences("DISPOSABLE_BOOLEAN", Context.MODE_PRIVATE);
-    private static final String KEY_SERVER_ADDRESS = "Still love you...17.5.14";
-    private static final String KEY_SHOULD_SHOW_ANNUNCIATION = "Sing about all the things you forgot, things you are not";
-    private static final String KEY_FIRST_SHOW_AD = "En, Today is 17.7.7, but, I'm still love you so....";
-    private static final String KEY_LAST_SHOW_AD_MILLIS = "But... it seems that...you will not come back any more...";
-    private static final String KEY_FLOATING_MENU_SHOWN = "17.10.28 I have idea of what you think...maybe...I'm overthinking...";
+    private static final String KEY_SERVER_ADDRESS = "KEY_SERVER_ADDRESS";
+    private static final String KEY_SHOULD_SHOW_ANNUNCIATION = "KEY_SHOULD_SHOW_ANNUNCIATION";
+    private static final String KEY_FLOATING_MENU_SHOWN = "KEY_FLOATING_MENU_SHOWN";
     private static final String KEY_EDITOR_THEME = "editor.theme";
     private static final String KEY_EDITOR_TEXT_SIZE = "editor.textSize";
 
@@ -53,8 +55,12 @@ public class Pref {
         return b;
     }
 
+    public static boolean isNightModeEnabled() {
+        return def().getBoolean(getString(R.string.key_night_mode), false);
+    }
+
     public static boolean isFirstGoToAccessibilitySetting() {
-        return getDisposableBoolean("I miss you so much ...", true);
+        return getDisposableBoolean("isFirstGoToAccessibilitySetting", true);
     }
 
     public static int oldVersion() {
@@ -82,7 +88,7 @@ public class Pref {
     }
 
     public static boolean isEditActivityFirstUsing() {
-        return getDisposableBoolean("Still Love Eating 17.4.6", true);
+        return getDisposableBoolean("Love Honmua 18.7.9", true);
     }
 
     public static String getServerAddressOrDefault(String defaultAddress) {
@@ -97,30 +103,13 @@ public class Pref {
         return getDisposableBoolean(KEY_SHOULD_SHOW_ANNUNCIATION, true);
     }
 
-    public static boolean shouldShowAd() {
-        String adShowingMode = def().getString(getString(R.string.key_ad_showing_mode), "Default");
-        switch (adShowingMode) {
-            case "Default":
-                return true;
-            case "OncePerDay":
-                long lastShowMillis = def().getLong(KEY_LAST_SHOW_AD_MILLIS, 0);
-                if (System.currentTimeMillis() - lastShowMillis < TimeUnit.DAYS.toMillis(1)) {
-                    return false;
-                }
-                def().edit().putLong(KEY_LAST_SHOW_AD_MILLIS, System.currentTimeMillis()).apply();
-                return true;
+    private static boolean isFirstDay() {
+        long firstUsingMillis = def().getLong("firstUsingMillis", -1);
+        if (firstUsingMillis == -1) {
+            def().edit().putLong("firstUsingMillis", System.currentTimeMillis()).apply();
+            return true;
         }
-        return true;
-    }
-
-    public static boolean isFirstShowingAd() {
-        return getDisposableBoolean(KEY_FIRST_SHOW_AD, true);
-    }
-
-    public static boolean isRecordWithRootEnabled() {
-        //always return true after version 3.0.0
-        //record without root has been deprecated
-        return true;
+        return System.currentTimeMillis() - firstUsingMillis <= TimeUnit.DAYS.toMillis(1);
     }
 
     public static boolean isRecordToastEnabled() {
@@ -174,7 +163,12 @@ public class Pref {
     }
 
     public static String getScriptDirPath() {
-        return def().getString(getString(R.string.key_script_dir_path),
+        String dir = def().getString(getString(R.string.key_script_dir_path),
                 getString(R.string.default_value_script_dir_path));
+        return new File(Environment.getExternalStorageDirectory(), dir).getPath();
+    }
+
+    public static boolean isForegroundServiceEnabled() {
+        return def().getBoolean(getString(R.string.key_foreground_servie), false);
     }
 }
