@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import com.stardust.autojs.core.ui.ViewExtras
 import com.stardust.autojs.engine.module.AssetAndUrlModuleSourceProvider
+import com.stardust.autojs.engine.preprocess.WispPreprocessor
 import com.stardust.autojs.execution.ExecutionConfig
 import com.stardust.autojs.project.ScriptConfig
 import com.stardust.autojs.rhino.RhinoAndroidHelper
@@ -88,7 +89,8 @@ open class RhinoJavaScriptEngine(private val mAndroidContext: android.content.Co
 
     @Throws(IOException::class)
     protected fun preprocess(script: Reader): Reader {
-        return script
+        var tmpProcessor:WispPreprocessor=WispPreprocessor();
+        return tmpProcessor.preprocess(script);
     }
 
     override fun forceStop() {

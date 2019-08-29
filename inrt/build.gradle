@@ -3,9 +3,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        wisp {
+            keyAlias 'key0'
+            keyPassword 'ketian324110'
+            storeFile file('H:/configs/ylyAndroidStudioKEY/wispReleaseKey.jks')
+            storePassword 'ketian435221'
+        }
+    }
     compileSdkVersion versions.compile
     buildToolsVersion versions.buildTool
-
     defaultConfig {
         applicationId "com.wisp.mifi"
         minSdkVersion versions.mini
@@ -104,7 +111,7 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1-alpha01', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

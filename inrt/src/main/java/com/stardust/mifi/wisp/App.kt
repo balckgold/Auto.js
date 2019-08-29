@@ -6,6 +6,9 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import cn.leancloud.AVLogger
+import cn.leancloud.AVOSCloud
+import cn.leancloud.AVUser
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -27,6 +30,10 @@ class App : Application() {
         GlobalAppContext.set(this)
         AutoJs.initInstance(this)
         GlobalKeyObserver.init()
+        //wisp add
+//        AVOSCloud.setLogLevel(AVLogger.Level.DEBUG);// or AVOSCloud.setLogLevel(AVLogger.Level.VERBOSE);
+        AVOSCloud.initialize(this,"sWNimdQk9KzqGOym07XL6YJx-gzGzoHsz","BbplFbAAKGJmWQtpwTeF2BXh");
+        //wisp add end
         Drawables.setDefaultImageLoader(object : ImageLoader {
             override fun loadInto(imageView: ImageView, uri: Uri) {
                 Glide.with(this@App)
